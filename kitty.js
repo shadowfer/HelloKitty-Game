@@ -23,10 +23,13 @@ export function setupDino() {
   currentFrameTime = 0
   yVelocity = 0
   setCustomProperty(dinoElem, "--bottom", 0)
-  document.removeEventListener("keydown", onJump)
-  document.addEventListener("keydown", onJump)
   
-  // Agrega el evento touchstart para dispositivos móviles
+  // Remove existing event listeners
+  document.removeEventListener("keydown", onJump);
+  document.removeEventListener("touchstart", onJump); // Remove previous touch event
+
+  // Add new event listeners
+  document.addEventListener("keydown", onJump);
   document.addEventListener("touchstart", onJump);
 }
 
@@ -72,6 +75,9 @@ function handleJump(delta) {
 }
 
 function onJump(e) {
+  // Previene el comportamiento predeterminado del evento touch
+  e.preventDefault();
+
   // Verifica si el evento es touch o una tecla y si no está saltando
   if ((e.code !== "Space" && e.type !== "touchstart") || isJumping) return
 
